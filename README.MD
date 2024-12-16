@@ -11,12 +11,12 @@ Current Brawl Stars server version supported by this library is v58.
 
 # Example client
 ```py
-import brawlsnake
+from brawlsnake.client import Client, get_default_settings
 import brawlsnake.messages
 
-c = brawlsnake.Client(get_default_settings())
+c = Client(get_default_settings())
 
-@c.on_packet(pybsclient.messages.server.LoginOkMessage.packet_type)
+@c.on_packet(brawlsnake.messages.server.LoginOkMessage.packet_type)
 def on_own_home(pkt):
     print("Connected!")
 
