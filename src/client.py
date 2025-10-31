@@ -8,9 +8,9 @@ import struct
 
 def get_default_settings():
     return {
-        "hash": "ad243357c65ef991993a73261437c2b0f6aa0d4d",
-        "major": 58,
-        "minor": 329,
+        "hash": "ac579039f1180538c6eea6e484e504a746c6364a",
+        "major": 64,
+        "minor": 239,
         "build": 1
     }
 
