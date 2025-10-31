@@ -15,7 +15,10 @@ def HASH_INTERNAL(REQUEST_PART1, SERVER_TIME, SERVER_MASK_FOR_HASH, SERVER_RANDO
     # NOT COVERED BY TRACING: this was done but never used later. There is a chance it was just not covered, for example look at SERVER_MASK_FOR_HASH note below
     HINPUT_PARTIAL = hmac.new(SOME_KEY, struct.pack("<QQQ", REQUEST_PART1, SERVER_TIME, SERVER_MASK_FOR_HASH), digestmod="sha256").digest()
 
-    if SERVER_MASK_FOR_HASH > 0xe:
+    # 64비트 값을 1바이트로 마스킹
+    server_mask_byte = SERVER_MASK_FOR_HASH & 0xFF
+
+    if server_mask_byte > 0xe:
         print("UNEXPECTED")
 
     SOME_WEIRD_HASH1 = None
@@ -23,14 +26,14 @@ def HASH_INTERNAL(REQUEST_PART1, SERVER_TIME, SERVER_MASK_FOR_HASH, SERVER_RANDO
     SOME_WEIRD_HASH3 = None
     SOME_WEIRD_HASH4 = None
 
-    if (SERVER_MASK_FOR_HASH & 0x1):
-        SOME_WEIRD_HASH1 = hashlib.sha256(struct.pack("<QB", 1, SERVER_MASK_FOR_HASH)).digest()
-    if (SERVER_MASK_FOR_HASH & 0x2):
-        SOME_WEIRD_HASH2 = hashlib.sha256(struct.pack("<QB", 2, SERVER_MASK_FOR_HASH)).digest()
-    if (SERVER_MASK_FOR_HASH & 0x4):
-        SOME_WEIRD_HASH3 = hashlib.sha256(struct.pack("<QB", 4, SERVER_MASK_FOR_HASH)).digest()
-    if (SERVER_MASK_FOR_HASH & 0x8):
-        SOME_WEIRD_HASH4 = hashlib.sha256(struct.pack("<QB", 8, SERVER_MASK_FOR_HASH)).digest()
+    if (server_mask_byte & 0x1):
+        SOME_WEIRD_HASH1 = hashlib.sha256(struct.pack("<QB", 1, server_mask_byte)).digest()
+    if (server_mask_byte & 0x2):
+        SOME_WEIRD_HASH2 = hashlib.sha256(struct.pack("<QB", 2, server_mask_byte)).digest()
+    if (server_mask_byte & 0x4):
+        SOME_WEIRD_HASH3 = hashlib.sha256(struct.pack("<QB", 4, server_mask_byte)).digest()
+    if (server_mask_byte & 0x8):
+        SOME_WEIRD_HASH4 = hashlib.sha256(struct.pack("<QB", 8, server_mask_byte)).digest()
 
     HWEIRD1 = hmac.new(SOME_KEY, digestmod="sha256")
     HWEIRD2 = hmac.new(SOME_KEY, digestmod="sha256")
