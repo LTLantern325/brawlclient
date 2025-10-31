@@ -1,6 +1,7 @@
 import socket
 import logging
 from .crypto import pepper
+from .crypto import attest  # attest 모듈 임포트
 from . import messages
 from . import bytequeue
 import struct
@@ -29,6 +30,7 @@ class Client:
         self.hi: int = 0
         self.lo: int = 0
         self.token: str = ""
+        self.attested_token: bytes = b''  # attest 처리된 토큰 저장 변수 추가
 
         self._stop_flag = False
 
@@ -64,6 +66,8 @@ class Client:
 
         @self.on_packet(20100)
         def on_server_hello(pkt: messages.server.ServerHelloMessage):
+            # 32바이트 토큰을 80바이트로 변환
+            self.attested_token = attest.attest(pkt.pass_token)
             self.send_pepper_login()
 
     def stop(self):
