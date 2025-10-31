@@ -6,7 +6,7 @@ from .nonce import Nonce
 class PepperCrypto:
     def __init__(self):
         # TODO: move public key into a config
-        self.server_public_key = bytes.fromhex("F7C80C59E42D4165A32D5D440A6939D54D18BB7F1B2335E85650673C27AA974F")
+        self.server_public_key = bytes.fromhex("076802FC015600FD802FC036601FB00F046802FC012C00DF8057003FE00DC007")
         self.client_secret_key = bytes(secrets.token_bytes(32))
         self.client_public_key = crypto_scalarmult_base(self.client_secret_key)
 
